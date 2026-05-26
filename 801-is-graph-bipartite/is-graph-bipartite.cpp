@@ -1,5 +1,23 @@
 class Solution {
 public:
+ bool dfs(int i,vector<bool>&vis,vector<int>&col,int colr,vector<vector<int>>& adj){
+                col[i]=1-colr;
+                vis[i]=true;
+            
+                    for(auto v:adj[i]){
+                        if(!vis[v]){
+                            vis[v]=true;
+                            col[v]=1-col[i];
+                            if(!dfs(v,vis,col,1-col[v],adj))return false;
+                        }
+                        else if(vis[v]&&(col[v]==col[i])){
+                            return false;
+                        }
+                    }
+                
+                return true;
+}
+   
     bool isBipartite(vector<vector<int>>& adj) {
         int n=adj.size();
         
@@ -7,27 +25,11 @@ public:
         vector<bool>vis(n,false);
         for(int i=0;i<n;i++){
             if(!vis[i]){
-            queue<int>q;
-                q.push(i);
-                col[i]=1;
-                vis[i]=true;
-                while(!q.empty()){
-                    auto it=q.front();
-                    q.pop();
-                    for(auto v:adj[it]){
-                        if(!vis[v]){
-                            vis[v]=true;
-                            col[v]=1-col[it];
-                            q.push(v);
-                        }
-                        else if(vis[v]&&(col[v]==col[it])){
-                            return false;
-                        }
-                    }
-                }
+             if(!dfs(i,vis,col,1,adj))return false;
             }
         }
         
         return true;
+            
     }
 };
