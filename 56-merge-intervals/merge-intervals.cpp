@@ -6,7 +6,7 @@ public:
         vector<vector<int>>ans;
         for(int i=1;i<intervals.size();i++){
              if(intervals[i][0]<=temp[1]){
-                    temp[0]=min(intervals[i][0],temp[0]);
+          
                     temp[1]=max(intervals[i][1],temp[1]);
 
 
