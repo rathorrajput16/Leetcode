@@ -1,31 +1,24 @@
 class Solution {
+    using ll=long long;
 public:
     int totalFruit(vector<int>& fruits) {
-        using ll=long long;
-        unordered_map<ll,ll>mp;
-        set<ll>st;
-        ll left=0;
-        ll ans=0;
-        int n=fruits.size();
-        for(ll i=0;i<n;i++){
-         mp[fruits[i]]=i;
-         if(st.size()==2&&st.find(fruits[i])==st.end()){
-            ll val=fruits[i];
-            ll mini=1e9;
-            ll maxi=-1;
-            for(auto it:st){
-                maxi=max(maxi,mp[it]);
-                mini=min(mini,mp[it]);
+        int ans=0;
+        int left=0;
+        map<ll,ll>mp;
+        for(int i=0;i<fruits.size();i++){
+        mp[fruits[i]]=i;
+        if(mp.size()>2){
+            vector<pair<ll,ll>>v;
+            for(auto it:mp){
+                v.push_back({it.second,it.first});
             }
-            left=mini+1;
-            ll val2=fruits[mini];
-            st.erase(val2);
-
-         }
-         st.insert(fruits[i]);
-         ans=max(i-left+1,ans);
-         }
-        
-         return ans;
+            sort(v.begin(),v.end());
+            left=v[0].first+1;
+            mp.erase(v[0].second);
+        }
+            
+            ans=max(ans,i-left+1);
+        }
+        return ans;
     }
 };
