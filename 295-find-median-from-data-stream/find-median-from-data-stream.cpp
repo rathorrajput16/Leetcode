@@ -1,37 +1,38 @@
 class MedianFinder {
-   using ll=long long;
+    using ll=long long;
 public:
-
-    priority_queue<ll>pq;
-    priority_queue<ll,vector<ll>,greater<ll>>pq1;
+    priority_queue<ll>maxi;
+    priority_queue<ll,vector<ll>,greater<ll>>mini;
     MedianFinder() {
         
     }
     
     void addNum(int num) {
-        pq.push(num);
-        if(pq.size()-pq1.size()>1){
-            pq1.push(pq.top());
-            pq.pop();
+        if(maxi.empty()||maxi.top()>=num){
+            maxi.push(num);
         }
-        if(!pq1.empty()&&pq.top()>pq1.top()){
-            ll val=pq.top();
-            pq.pop();
-            ll val2=pq1.top();
-            pq1.pop();
-            pq.push(val2);
-            pq1.push(val);
+        else mini.push(num);
+        if(maxi.size()>mini.size()+1){
+            ll n=maxi.top();
+            maxi.pop();
+            mini.push(n);
+        }
+        if(mini.size()>maxi.size()+1){
+            ll n=mini.top();
+            mini.pop();
+            maxi.push(n);
         }
     }
     
     double findMedian() {
-        if(pq.size()>pq1.size()){
-            return pq.top();
+        int s=maxi.size()+mini.size();
+        if(s%2){
+            if(maxi.size()>mini.size())return maxi.top();
+            return mini.top();
         }
-        else if(pq.size()<pq1.size()){
-           return pq1.top();
+        else{
+            return (maxi.top()+mini.top())/2.0;
         }
-        return (pq.top()+pq1.top())/2.0;
     }
 };
 
