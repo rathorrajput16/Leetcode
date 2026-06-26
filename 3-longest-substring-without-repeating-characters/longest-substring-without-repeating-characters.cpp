@@ -1,22 +1,24 @@
 class Solution {
 public:
+    unordered_map<char,int>mp;
+    int ans=0;
+    int left=0;
     int lengthOfLongestSubstring(string s) {
-        vector<int>vis(256,-1);
-        int left=0;
-        int ans=0;
-        for(int right=0;right<s.size();right++){
-                 if(vis[s[right]]<left){
-                    vis[s[right]]=right;
-                 }
-                 else{
-                    if(right-left>ans)ans=right-left;
-                    left=vis[s[right]]+1;
-                     vis[s[right]]=right;
-                     
-                 }
+        for(int i=0;i<s.size();i++){
+            if(mp.find(s[i])==mp.end()){
+                
+            }
+            else{
+             if(mp[s[i]]<left){
 
+             }
+             else{
+                left=mp[s[i]]+1;
+             }
+            }
+            mp[s[i]]=i;
+            ans=max(ans,i-left+1);
         }
-         if(s.size()-left>ans)ans=s.size()-left;
-         return ans;
+        return ans;
     }
 };
