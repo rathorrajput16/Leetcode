@@ -1,47 +1,45 @@
 class Twitter {
     using ll=long long;
-public:
-
     int time;
+    map<ll,set<ll>>mp;
+    map<ll,vector<pair<ll,ll>>>t;
+public:
     Twitter() {
-       time=0;
+        time=0;
     }
-   
-    unordered_map<ll,set<ll>>follows;
-    unordered_map<ll,vector<pair<ll,ll>>>tweets;
+    
     void postTweet(int userId, int tweetId) {
-        tweets[userId].push_back({time,tweetId});
+        t[userId].push_back({time,tweetId});
         time++;
     }
     
     vector<int> getNewsFeed(int userId) {
-         priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>>pq;
-        for(int i=max(0LL,(ll)(tweets[userId].size()-10));i<tweets[userId].size();i++){
-            pq.push({tweets[userId][i].first,tweets[userId][i].second});
+        vector<int>ans;
+        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>>pq;
+         for(auto it:t[userId]){
+            pq.push(it);
             if(pq.size()>10)pq.pop();
-        }
-        if(pq.size()>10)pq.pop();
-        for(auto it:follows[userId]){
-             for(int i=max(0LL,(ll)(tweets[it].size()-10));i<tweets[it].size();i++){
-            pq.push({tweets[it][i].first,tweets[it][i].second});
-            if(pq.size()>10)pq.pop();
-        }
-        }
-        vector<int>res;
-        while(!pq.empty()){
-            res.push_back(pq.top().second);
+         }
+         for(auto it:mp[userId]){
+            for(auto f:t[it]){
+                pq.push(f);
+            if(pq.size()>10)pq.pop(); 
+            }
+         }
+         while(!pq.empty()){
+            ans.push_back(pq.top().second);
             pq.pop();
-        }
-        reverse(res.begin(),res.end());
-        return res;
+         }
+         reverse(ans.begin(),ans.end());
+         return ans;
     }
     
     void follow(int followerId, int followeeId) {
-        follows[followerId].insert(followeeId);
+        mp[followerId].insert(followeeId);
     }
     
     void unfollow(int followerId, int followeeId) {
-        follows[followerId].erase(followeeId);
+        mp[followerId].erase(followeeId);
     }
 };
 
