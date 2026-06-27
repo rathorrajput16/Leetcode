@@ -12,7 +12,7 @@ public:
                 high=mid-1;
             }
         }
-        if(high == -1)return k;
-        return arr[high]+(k-(arr[high]-(high+1)));
+       
+        return k+high+1;
     }
 };
