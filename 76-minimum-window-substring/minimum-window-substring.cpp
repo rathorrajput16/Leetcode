@@ -1,33 +1,35 @@
 class Solution {
-    using ll=long long;
 public:
     string minWindow(string s, string t) {
-        map<char,ll>mp;
-        for(char ch:t){
-            mp[ch]++;
+        map<char,int>mp;
+        for(int i=0;i<t.size();i++){
+            mp[t[i]]++;
         }
-        int needed=0,left=0,start=0,ans=1e9;
+        int needed=t.size();
+        int left=0;
+        int start=0;
+        int ans=1e9;
         for(int i=0;i<s.size();i++){
-            if(mp[s[i]]>0){    
+              if(mp[s[i]]>0){
+                
+                needed--;
+              }
+              mp[s[i]]--;
+              while(needed==0){
+               if(i-left+1<ans){
+                start=left;
+                ans=i-left+1;
+               }
+               if(mp[s[left]]==0){
                 needed++;
-            }
-            mp[s[i]]--;
-            while(needed==t.size()){
-                if(i-left+1<ans){
-                    start=left;
-                    ans=i-left+1;
-                }
-                 mp[s[left]]++;
-                 
-                 if(mp[s[left]]>0){
-                    needed--;
-                 }
-                 left++;
+               }
+               
+               mp[s[left]]++;
+               left++;
+
+              }
         }
-        }
-        if (ans == 1e9)
-    return "";
-        string ans1=s.substr(start,ans);
-        return ans1;
+        if(ans == 1e9) return "";
+        return s.substr(start,ans);
     }
 };
