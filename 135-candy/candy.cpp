@@ -1,27 +1,27 @@
 class Solution {
 public:
-    int candy(vector<int>& arr) {
-        int n=arr.size();
+    int candy(vector<int>& ratings) {
+        int i=0;
+        int n=ratings.size();
         int candies=n;
-        int i=1;
-        while(i<n){
-            if(arr[i]==arr[i-1]){
+        while(i<n-1){
+            if(ratings[i]==ratings[i+1]){
                 i++;
                 continue;
             }
             int inc=0;
-            int dec=0;
-            while(i<n&&arr[i]>arr[i-1]){
-               inc++;
-                candies+=inc;
-              
-              i++;
+            while(i+1<n&&ratings[i]<ratings[i+1]){
+             
+                 i++;
+                inc++;
+                    candies+=inc;
             }
-            while(i<n&&arr[i]<arr[i-1]){
-                    dec++;
-                   candies+=dec;
-                  
-                   i++;
+            int dec=0;
+            while(i+1<n&&ratings[i]>ratings[i+1]){
+                i++;
+                dec++;
+                                candies+=dec;
+
             }
             candies-=min(inc,dec);
         }
